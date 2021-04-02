@@ -2,8 +2,8 @@ import os
 import requests
 import re
 import time
-from Hojicha.database import SessionLocal
-from Hojicha.utility import *
+from .database import SessionLocal
+from .utility import *
 from sqlalchemy.orm import Session
 from sqlalchemy.sql.expression import desc
 from datetime import datetime as dt
@@ -14,10 +14,10 @@ from sqlalchemy.sql.functions import current_timestamp
 from sqlalchemy.orm import relationship
 from pytz import timezone
 
-from Hojicha.database import Base, get_ulid,session
-from Hojicha.logger import set_logger
-from Hojicha.utility import now_timestamp
-from Hojicha.database import Base, get_ulid,session
+from .database import Base, get_ulid,session
+from .logger import set_logger
+from .utility import now_timestamp
+from .database import Base, get_ulid,session
 
 
 class BookItem(Base):
@@ -28,10 +28,9 @@ class BookItem(Base):
     
     id = Column('id', Integer, primary_key=True)
     title = Column('title',String(100),nullable=False)
-    isbn = Column('isbn',String(20),nullable=False)
-    jan = Column('jan',String(20),nullable=True)
-    author = Column('author',String(20),nullable=False)
-    description = Column('description',String(1024),nullable=True)
+    itemName = Column('itemName',String(20),nullable=False)
+    itemPrice = Column('itemPrice',String(20),nullable=True)
+  
 
 #API
 Rakuten_Ranking_API = "https://app.rakuten.co.jp/services/api/IchibaItem/Ranking/20170628?format=json"
@@ -66,20 +65,20 @@ class ProductScraping():
                 except:
                     title = ""
                 try:
-                    identifier = item["item"]["itemName"]
+                    itemName = item["item"]["itemName"]
                 except:
-                    identifier = ""
+                    itemName = ""
                 try:
-                    description = item["item"]["itemPrice"]
+                    itemPrice = item["item"]["itemPrice"]
                 except:
-                    description = ""
+                    itemPrice = ""
                 # try:
                 #     authors = item["volumeInfo"]["authors"][0]
                 # except:
                 #     authors = ""
 
                 # Insert
-                db.add(BookItem(title=title, isbn=identifier, description=description, author=authors))
+                db.add(BookItem(title=title, itemName=itemName, itemPrice=itemPrice, item))
 
         # 保存確定
         db.commit()
