@@ -2,8 +2,8 @@ import os
 import requests
 import re
 import time
-from .database import SessionLocal
-from .utility import *
+from database import SessionLocal
+from utility import *
 from sqlalchemy.orm import Session
 from sqlalchemy.sql.expression import desc
 from datetime import datetime as dt
@@ -14,10 +14,10 @@ from sqlalchemy.sql.functions import current_timestamp
 from sqlalchemy.orm import relationship
 from pytz import timezone
 
-from .database import Base, get_ulid,session
-from .logger import set_logger
-from .utility import now_timestamp
-from .database import Base, get_ulid,session
+from database import Base, get_ulid,session
+from logger import set_logger
+from utility import now_timestamp
+from database import Base, get_ulid,session
 
 
 class BookItem(Base):
@@ -78,7 +78,7 @@ class ProductScraping():
                 #     authors = ""
 
                 # Insert
-                db.add(BookItem(title=title, itemName=itemName, itemPrice=itemPrice, item))
+                db.add(BookItem(title=title, itemName=itemName, itemPrice=itemPrice))
 
         # 保存確定
         db.commit()
